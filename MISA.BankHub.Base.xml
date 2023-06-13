@@ -1,0 +1,3086 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MISA.BankHub.Base</name>
+    </assembly>
+    <members>
+        <member name="T:MISA.BankHub.Base.BankRequest.BankRequest">
+            <summary>
+            Tạo request tới ngân hàng.
+            </summary>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequest.HandleHttpClientResponse(MISA.BankHub.Base.Entities.ResponseBase,MISA.BankHub.Base.BankRequest.MBHHttpResponseMessage)">
+            <summary>
+            Xử lý kết quả trả về sau khi gọi API của ngân hàng.
+            </summary>
+            <param name="resultBase">Đối tượng chứa thông tin kết quả trả về</param>
+            <param name="responseMsg">Đối tượng trả về sau khi gọi API</param>
+            <returns>True: Gọi thành công; False: Có lỗi xảy ra</returns>
+            Modify by NDViet 09/01/2019: Thay đổi đối tượng trả về khi gọi API, thêm thông tin request detail.
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequest.GetHeader(System.Object)">
+            <summary>
+            Lấy danh sách header theo thuộc tính RequestHeaderAttribute
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequest.GetResponseFromAPIService(System.Uri,System.String,System.Object,System.Boolean,System.Boolean)">
+            <summary>
+            Kết nối tới API service và lấy kết quả về
+            </summary>
+            <param name="baseAddress">URL chứa đường dẫn tới API</param>
+            <param name="apiFunction">Tên function cần gọi trên API</param>
+            <param name="param">Đối tượng gửi tới API</param>
+            <param name="allowNull">Có cho phép gửi cả thuộc tính null trên đối tượng gửi tới API hay ko</param>
+            <returns>Kết quả sau khi gọi lên API</returns>
+            Modify by NDViet 09/01/2019: Thay đổi đối tượng trả về để lấy thêm thông tin request detail
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequest.GetJsonData(System.Object,System.Boolean)">
+            <summary>
+            Tạo chỗi json từ đối tượng
+            </summary>
+            <param name="param"></param>
+            <param name="allowNull"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MISA.BankHub.Base.BankRequest.BankRequestAction">
+            <summary>
+            Thực hiện logic
+            </summary>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequestAction.HandleHttpClientResponse(MISA.BankHub.Base.Entities.ResponseBase,MISA.BankHub.Base.BankRequest.MBHHttpResponseMessage)">
+            <summary>
+            Xử lý kết quả trả về sau khi gọi API của ngân hàng.
+            </summary>
+            <param name="resultBase">Đối tượng chứa thông tin kết quả trả về</param>
+            <param name="responseMsg">Đối tượng trả về sau khi gọi API</param>
+            <returns>True: Gọi thành công; False: Có lỗi xảy ra</returns>
+            Modify by NDViet 09/01/2019: Gán thông tin request detail vào đối tượng trả về.
+            Xử lý kết quả trả về khi gọi API ngân hàng bị Exception (trả về mã lỗi 1000)
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequestAction.HandleHttpClientResLocal(MISA.BankHub.Base.Entities.ResponseBase,System.Net.Http.HttpResponseMessage)">
+            <summary>
+            Xử lý kết quả trả về sau khi gọi API của MBH.
+            </summary>
+            <param name="resultBase"></param>
+            <param name="responseMsg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequestAction.GetHeader(System.Object)">
+            <summary>
+            Lấy danh sách header theo thuộc tính RequestHeaderAttribute
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequestAction.GetResponseFromAPIService(System.Uri,System.String,System.Object,System.Boolean,System.Boolean)">
+            <summary>
+            Kết nối tới API service và lấy kết quả về
+            </summary>
+            <param name="baseAddress">URL chứa đường dẫn tới API</param>
+            <param name="apiFunction">Tên function cần gọi trên API</param>
+            <param name="param">Đối tượng gửi tới API</param>
+            <param name="allowNull">Có cho phép gửi cả thuộc tính null trên đối tượng gửi tới API hay ko</param>
+            <param name="isElk"></param>
+            <returns>Kết quả sau khi gọi lên API</returns>
+            Modify by NDViet 09/01/2019: Lấy thông tin request detail để ghi log.
+            Modify by NDViet 16/03/2019: Sửa lỗi không gọi được service của VPBank khi họ nâng cấp F5 và cập nhật lại cách ghi log
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequestAction.EncryptTokenForLog(System.Object)">
+            <summary>
+            Mã hóa Token thành giá trị "***"
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+            TODO Kiểm tra lại xem mã hóa Token ở phần body của đối tượng gửi đi
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequestAction.GenLogForRequestDetail(System.String)">
+            <summary>
+            Tạo chuỗi chứa thông tin request detail để ghi log
+            </summary>
+            <param name="content"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequestAction.GenRequestInfoDetail(System.String,System.Net.Http.HttpClient,System.Object,System.Uri,System.String)">
+            <summary>
+            Tạo chuỗi chứa thông tin request
+            </summary>
+            <param name="logId"></param>
+            <param name="client"></param>
+            <param name="param"></param>
+            <param name="baseAddress"></param>
+            <param name="apiFunction"></param>
+            <returns></returns>
+            Mã hóa Authorization, Token trong header thành ***
+            TODO Xem lại tên giá trị token trên phần headder hàng cho đúng (VPB là tokenNo,...)
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequestAction.GenResponseInfoDetail(System.String,MISA.BankHub.Base.BankRequest.MBHHttpResponseMessage)">
+            <summary>
+            Tạo chuỗi chứa thông tin kết quả trả về sau khi gọi API
+            </summary>
+            <param name="logId"></param>
+            <param name="response"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequestAction.WriteLogAfterCallAPI(System.String,System.Boolean)">
+            <summary>
+            Ghi log sau khi gọi xong API
+            </summary>
+            <param name="content"></param>
+            <param name="isElk"></param>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequestAction.WriteLogBeforeCallAPI(System.String,System.Boolean)">
+            <summary>
+            Ghi log trước khi gọi API
+            </summary>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.BankRequestAction.GetJsonData(System.Object,System.Boolean)">
+            <summary>
+            Tạo chỗi json từ đối tượng
+            </summary>
+            <param name="param"></param>
+            <param name="allowNull"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MISA.BankHub.Base.BankRequest.ShouldSerializeContractResolver">
+            <summary>
+            Loại bỏ field có attribute là RequestHeader trên đối tượng khi convert sang Json
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.BankRequest.MBHHttpResponseMessage">
+            <summary>
+            Đối tượng trả về sau khi gọi sang API của ngân hàng
+            </summary>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.MBHHttpResponseMessage.#ctor(System.Net.Http.HttpResponseMessage,System.String)">
+            <summary>
+            Hảm khởi tạo khi tạo request kèm thông tin request chi tiết.
+            </summary>
+            <param name="other"></param>
+            <param name="requestDetail"></param>
+        </member>
+        <member name="P:MISA.BankHub.Base.BankRequest.MBHHttpResponseMessage.HasException">
+            <summary>
+            Đánh dấu xảy ra exception khi gọi API của ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.BankRequest.MBHHttpResponseMessage.RequestDetail">
+            <summary>
+            Thông tin request chi tiết khi gọi sang ngân hàng (Request và Response)
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.BankRequest.ISOAPHelper">
+            <summary>
+            Interface SOAPHelper
+            CreateSoapEnvelope -> CreateWebRequest -> CallSOAPService -> HandleResponseXML
+            </summary>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.ISOAPHelper.CreateSoapEnvelope(MISA.BankHub.Base.BankRequest.SOAPAttribute,System.String)">
+            <summary>
+            Tạo evelope XML
+            </summary>
+            <param name="nameSpace"></param>
+            <param name="bodyRequestXml"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.ISOAPHelper.CreateWebRequest(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Tạo request cho đối tượng request SOAP service
+            </summary>
+            <param name="url"></param>
+            <param name="action"></param>
+            <param name="contentType"></param>
+            <param name="accept"></param>
+            <param name="method"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.ISOAPHelper.CallSOAPService(System.String,System.Xml.XmlDocument,System.Net.HttpWebRequest)">
+            <summary>
+            Gọi SOAP service
+            </summary>
+            <param name="ServiceURL"></param>
+            <param name="soapEnvelopeXml"></param>
+            <param name="webRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.ISOAPHelper.HandleResponseXML``1(System.String,System.String)">
+            <summary>
+            Xử lý dữ liệu trả về từ SOAP service
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="resultSOAP"></param>
+            <param name="pattent"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MISA.BankHub.Base.BankRequest.SOAPAttribute">
+            <summary>
+            Đối tượng lưu thuộc tính của SOAP
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.BankRequest.SOAPHelperAction">
+            <summary>
+            Đối tượng SOAP helper
+            </summary>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.SOAPHelperAction.CallSOAPService(System.String,System.Xml.XmlDocument,System.Net.HttpWebRequest)">
+            <summary>
+            Gọi tới SOAP service
+            </summary>
+            <param name="ServiceURL"></param>
+            <param name="soapEnvelopeXml"></param>
+            <param name="webRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.SOAPHelperAction.CreateSoapEnvelope(MISA.BankHub.Base.BankRequest.SOAPAttribute,System.String)">
+            <summary>
+            Tạo Envelope cho đối tượng XML request
+            </summary>
+            <param name="nameSpace"></param>
+            <param name="bodyRequestXml"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.SOAPHelperAction.CreateWebRequest(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Tạo request khi gọi lên SOAP service
+            </summary>
+            <param name="url">Đường dẫn tới endpoint</param>
+            <param name="action">Action</param>
+            <param name="contentType">contentType</param>
+            <param name="accept">accept</param>
+            <param name="method">method</param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.SOAPHelperAction.HandleResponseXML``1(System.String,System.String)">
+            <summary>
+            Lấy dữ liệu trong kết quả trả về và ép kiểu về đối tượng đích
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="resultSOAP">Chuỗi kết quả sau khi gọi lên SOAP service</param>
+            <param name="pattent">Chuỗi pattent để lấy nội dung theo biểu thức chính quy</param>
+            <returns></returns>
+        </member>
+        <member name="T:MISA.BankHub.Base.BankRequest.SOAPHelper">
+            <summary>
+            Đối tượng hỗ trợ gọi lên service SOAP (static)
+            </summary>
+        </member>
+        <member name="F:MISA.BankHub.Base.BankRequest.SOAPHelper.SOAPHelperAction">
+            <summary>
+            Khởi tạo đối tượng SOAP helper
+            </summary>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.SOAPHelper.CallSOAPService(System.String,System.Xml.XmlDocument,System.Net.HttpWebRequest)">
+            <summary>
+            Gọi SOAP service
+            </summary>
+            <param name="ServiceURL"></param>
+            <param name="soapEnvelopeXml"></param>
+            <param name="webRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.SOAPHelper.CreateSoapEnvelope(MISA.BankHub.Base.BankRequest.SOAPAttribute,System.String)">
+            <summary>
+            Tạo envelope cho file xml
+            </summary>
+            <param name="nameSpace"></param>
+            <param name="bodyRequestXml"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.SOAPHelper.CreateWebRequest(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Tạo phương thức request
+            </summary>
+            <param name="url"></param>
+            <param name="action"></param>
+            <param name="contentType"></param>
+            <param name="accept"></param>
+            <param name="method"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.BankRequest.SOAPHelper.HandleResponseXML``1(System.String,System.String)">
+            <summary>
+            Xử lý dữ liệu trả về sau khi gọi lên SOAP service
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="resultSOAP"></param>
+            <param name="pattent"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.AccDetailReqBase">
+            <summary>
+            Request lấy thông tin tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccDetailReqBase.AccountNo">
+            <summary>
+            Số tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccDetailReqBase.AccountType">
+            <summary>
+            Loại tài khoản.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.AccInfoReqBase">
+            <summary>
+            Request lấy thông tin tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccDetailResBase.Account">
+            <summary>
+            Danh sách tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccInfoResBase.Accounts">
+            <summary>
+            Danh sách tài khoản
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.AccStatusInternalResBase">
+            <summary>
+            Trạng thái tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccStatusInternalResBase.AccountsStatus">
+            <summary>
+            Danh sách trạng thái tài khoản
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.AccStatusInternalReqBase">
+            <summary>
+            Đối tượng chứa danh sách tài khoản cần kiểm tra tồn tại.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccStatusInternalReqBase.Accounts">
+            <summary>
+            Danh sách tài khoản cần kiểm tra
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.AccDetailStatusReqBase">
+            <summary>
+            Đối tượng request chứa thông tin tài khoản cần kiểm tra
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccDetailStatusReqBase.AccountNo">
+            <summary>
+            Tài khoản ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccDetailStatusReqBase.BankCode">
+            <summary>
+            Mã ngân hàng.
+            Ví dụ: Vietinbank: VTB, PVBank: PVB,...
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.AccDetailStatusResBase">
+            <summary>
+            Đối tượng thông tin trạng thái của tài khoản ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccDetailStatusResBase.HasAccount">
+            <summary>
+            Có tài khoản hay không? 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccDetailStatusResBase.AccountStatus">
+            <summary>
+            Trạng thái của tài khoản. (Theo từng ngân hàng)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccDetailStatusResBase.HasIB">
+            <summary>
+            Đã đăng ký Internet Banking hay chưa
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BankResBase">
+            <summary>
+            Ngân hàng kết nối qua MBH
+            </summary>
+            Modify by NDViet 03/10/2018: Thêm ngày cập nhật cho danh sách ngân hàng hỗ trợ.
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankResBase.BanksCode">
+            <summary>
+            Danh sách mã ngân hàng kết nối tới MBH
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankResBase.ModifyDate">
+            <summary>
+            Ngày thay đổi gần nhất của danh sách ngân hàng đang hỗ trợ
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.SupportedBanksReq">
+            <summary>
+            Thông tin thời gian ModifyDate hiện tại của danh sách ngân hàng đang hỗ trợ.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.SupportedBanksReq.ModifyDate">
+            <summary>
+            Thời gian thay đổi gần nhất của danh sách ngân hàng đang hỗ trợ.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BenefitInfoReqBase">
+            <summary>
+            Người thụ hưởng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BenefitInfoReqBase.AccountNo">
+            <summary>
+            Số tài khoản
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BenefitInfoResBase">
+            <summary>
+            Người thụ hưởng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BenefitInfoResBase.BenefitName">
+            <summary>
+            Số tài khoản
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BlockChain.HistoryRes">
+            <summary>
+            Chưa phát sinh request cập nhật trạng thái thì kết quả trả về có dạng:
+                json {"status":200,"message":"","payload":{"paymenOrderID":"POID20180900001","from":"101010101","to":"101011101","amount":"100000000","transactionID":"11022012012","timeStamp":"2018-06-25T17:36:14.319Z","status":"0"}}
+            Đã phát sinh request cập nhật trạng thái thì kết quả trả về có dạng:
+                json {"status":200,"message":"","payload":[{"paymentOrderID":"POID20180900001","timeStamp":"2018-06-25T17:36:14.319Z","status":"1"},{"paymenOrderID":"POID20180900001","from":"101010101","to":"101011101","amount":"100000000","transactionID":"11022012012","timeStamp":"2018-06-25T17:36:14.319Z","status":"0"}]}
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BlockChain.PayloadHistoryRes">
+            <summary>
+            Chi tiết kết quả trả về
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BlockChain.PayloadHistoryRes.From">
+            <summary>
+            Tài khoản nguồn
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BlockChain.PayloadHistoryRes.To">
+            <summary>
+            Tài khoản đích
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BlockChain.PayloadHistoryRes.transactionID">
+            <summary>
+            Mã giao dịch chuyển tiền trả về từ ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BlockChain.PayloadHistoryRes.Amount">
+            <summary>
+            Số tiền của giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BlockChain.PaymentOrderByIdRes.Payload">
+            <summary>
+            Chưa phát sinh request cập nhật trạng thái thì kết quả trả về có dạng:
+                json {"status":200,"message":"","payload":{"paymenOrderID":"POID20180900001","from":"101010101","to":"101011101","amount":"100000000","transactionID":"11022012012","timeStamp":"2018-06-25T17:36:14.319Z","status":"0"}}
+            Đã phát sinh request cập nhật trạng thái thì kết quả trả về có dạng:
+                json {"status":200,"message":"","payload":{ "paymentOrderID": "POID20180900001", "timeStamp":"2018-06-25T17:36:14.319Z", "status":"1" }}
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BlockChain.PayloadPaymentInfoBase">
+            <summary>
+            Đối tượng lưu thông tin chi tiết kết quả trả về
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BlockChain.PayloadPaymentInfoBase.PaymentOrderID">
+            <summary>
+            Mã lệnh chuyển tiền
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:MISA.BankHub.Base.Entities.BlockChain.PayloadPaymentInfoBase.TimeStamp" -->
+        <member name="P:MISA.BankHub.Base.Entities.BlockChain.PayloadPaymentInfoBase.Status">
+            <summary>
+            Trạng thái của giao dịch ủy nhiệm chi
+            0:	Kế toán viên lập lệnh chuyển tiền
+            1:	Kế toán trưởng đã kiểm duyệt lệnh chuyển tiền
+            2:	Kế toán trưởng từ chối lệnh chuyển tiền
+            3:	Kế toán trưởng lập lệnh chuyển tiền
+            4:	Giám đốc đã phê duyệt lệnh chuyển tiền
+            5:	Giám đốc đã từ chối lệnh chuyển tiền
+            6:	Chuyển khoản thành công
+            7:	Chuyển khoản thất bại
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BlockChain.PaymentOrderByIdReq">
+            <summary>
+            Thông tin cập nhật mã UNC trên blockchain
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BlockChain.PaymentOrderReq">
+            <summary>
+            Thông tin tạo giao dịch gửi lên blockchain
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BlockChain.PaymentOrderRes">
+            <summary>
+            Kết quả trả về sau khi tạo, update payment order
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BlockChain.PaymentOrderRes.Payload">
+            <summary>
+            Kết quả trả về
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BlockChain.BlockChainResBase">
+            <summary>
+            Kết quả trả về
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BlockChain.BlockChainResBase.status">
+            <summary>
+            Mã kết quả trả về, dùng mã này để kiểm tra request thành công hay thất bại
+            200	Thành công	Server nhận request và thực hiện thành công. Kiểm tra kết quả trong trường Payload, trường Message trả về null
+            201	Thành công  Thêm giao dịch vào blockchain thành công
+            400	Lỗi Bad Request Lỗi server khi đọc body/parameter của request, kiểm tra lại body/parameter của request và kiểm tra chi tiết lỗi trong trường message, payload trả về null
+            422	Lỗi Unprocessable Entity Lỗi xảy ra khi thực hiện request, payload sẽ trả về null, kiểm tra lỗi chi tiết trong trường Message
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BlockChain.BlockChainResBase.message">
+            <summary>
+            Chi tiết lỗi
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.CustomerRegisterResBase">
+            <summary>
+            Đối tượng trả về của API gửi thông tin tới Ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterResBase.BanksResult">
+            <summary>
+            Danh sách kết quả trả về khi gọi API ngân hàng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BankResult">
+            <summary>
+            Kết quả trả về sau khi gọi API ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankResult.BankCode">
+            <summary>
+            Mã ngân hàng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.CustomerRegisterReqBase">
+            <summary>
+            Đối tượng đăng ký hệ thống MISA BankHub
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterReqBase.BanksCode">
+            <summary>
+            Danh sách mã ngân hàng cần gửi
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterReqBase.TaxCode">
+            <summary>
+            Mã số thuế.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterReqBase.CompanyName">
+            <summary>
+            Tên công ty.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterReqBase.ProvinceName">
+            <summary>
+            Tỉnh, thành phố.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterReqBase.Address">
+            <summary>
+            Địa chỉ.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterReqBase.Name">
+            <summary>
+            Họ tên người liên hệ.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterReqBase.Position">
+            <summary>
+            Chức vụ người liên hệ.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterReqBase.PhoneNumber">
+            <summary>
+            Số điện thoại người liên hệ.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterReqBase.Email">
+            <summary>
+            Email người liên hệ.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.AccHisDetailReqBase">
+            <summary>
+            Thông tin yêu cầu lấy chi tiết lịch sử giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailReqBase.AccountNo">
+            <summary>
+            Số tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailReqBase.TransactionId">
+            <summary>
+            Mã lịch sử giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailReqBase.Dorc">
+            <summary>
+            Cộng hay trừ tiền
+            Chỉ sử dụng cho VTB
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailReqBase.ChannelId">
+            <summary>
+            Kênh giao dịch
+            Chỉ sử dụng cho VTB
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailReqBase.TransRefNo">
+            <summary>
+            Mã tham chiếu
+            Chỉ dùng cho VTB
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.AccHisDetailResBase">
+            <summary>
+            Thông tin trả về chi tiết lịch sử giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailResBase.DCSign">
+            <summary>
+            Công hay trừ tiền (D or C)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailResBase.BeneficiaryAcctNo">
+            <summary>
+            Số tài khoản thụ hưởng (Hiện tại chỉ có trên MSB)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailResBase.BeneficiaryAcctName">
+            <summary>
+            Tên người thụ hưởng (Hiện tại chỉ có trên MSB)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailResBase.BeneficiaryAcctBank">
+            <summary>
+            Ngân hàng thụ hưởng/Ngân hàng chuyển (Hiện tại chỉ có trên MSB)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailResBase.Amount">
+            <summary>
+            Số tiền giao dịch	
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailResBase.Remark">
+            <summary>
+            Chú thích
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailResBase.TranTime">
+            <summary>
+            Thời gian giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailResBase.TransferType">
+            <summary>
+            Mã loại giao dịch
+            IN: Nội bộ
+            OUT: Liên ngân hàng
+            OTHER: Loại giao dịch khác
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailResBase.PreBalance">
+            <summary>
+            Số tiền còn lại 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailResBase.TranSerial">
+            <summary>
+            Số serial của lịch sử giao dịch. Không dùng để tra cứu thông tin giao dịch.
+            Đối với VTB: Là dữ liệu đầu vào của request chi tiết lịch sử giao dịch: TranSerial
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHisDetailResBase.CurrencyCode">
+            <summary>
+            Mã loại tiền
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.EnFileIdResBase">
+            <summary>
+            Đối tượng lưu thông tin file ID sau khi upload hồ sơ lên Instant.vn
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileIdResBase.FileUploadId">
+            <summary>
+            Mã file upload của Instant trả về, sử dụng để tra cứu trạng thái hồ sơ.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.EnFileIdReqBase">
+            <summary>
+            Đối tượng lưu thông tin request để lấy mã ID file upload hồ sơ lên Instant
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileIdReqBase.MBHFileId">
+            <summary>
+            Mã file ID mà MBH tiếp nhận
+            Client sẽ sử dụng mã này để lấy thông tin file upload id trên Instant.vn
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileResBase.MBHFileId">
+            <summary>
+            Mã file ID mà MBH tiếp nhận
+            Client sẽ sử dụng mã này để lấy thông tin file upload id trên Instant.vn
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.EnFileReqBase">
+            <summary>
+            ĐỐi tượng request để upload hồ sơ
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileReqBase.EnterpriseId">
+            <summary>
+            Mã doanh nghiệp do instant định danh 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileReqBase.Name">
+            <summary>
+            tên của hồ sơ
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileReqBase.Province">
+            <summary>
+            mã tỉnh/thành phố, nơi doanh nghiệp muốn nộp hồ sơ vay
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileReqBase.District">
+            <summary>
+            mã quận 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileReqBase.Email">
+            <summary>
+            email của doanh nghiệp để nhận phản hồi từ hệ thống instant
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileReqBase.ContactName">
+            <summary>
+            Tên người liên hệ
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileReqBase.ContactTitle">
+            <summary>
+            Tile contact
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileReqBase.ContactMobile">
+            <summary>
+            Số điện thoại liên hệ
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileReqBase.LoanAmount">
+            <summary>
+            Số tiền muốn vay
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileReqBase.BucketName">
+            <summary>
+            Tên Bucket trong Minio 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileReqBase.ObjectID">
+            <summary>
+            ID của object lưu trong bucket
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileReqBase.MBHInstaintID">
+            <summary>
+            ID để mapping với file id mà Instain trả lại sau khi upload hồ sơ
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.EnRegisterReqBase">
+            <summary>
+            ĐỐi tượng request để đăng ký thông tin doanh nghiệp
+            Trong Instant mỗi đơn vị/doanh nghiệp muốn vay vốn hoặc bán công nợ thì được định danh là một Enterprise,  mỗi enterprise sẽ gửi hồ sơ qua Instant để thẩm định
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnRegisterReqBase.Name">
+            <summary>
+            Tên doanh nghiệp
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnRegisterReqBase.Province">
+            <summary>
+            Mã tỉnh/thành phố, nơi doanh nghiệp 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnRegisterReqBase.Code">
+            <summary>
+            Mã số thuế
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.EnRegisterResBase">
+            <summary>
+            Đối tượng lưu trữ thông tin trả về sau khi đăng ký hồ sơ với Instant.vn
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnRegisterResBase.InstantEnId">
+            <summary>
+            Mã đăng ký Instant trả về sau khi đăng ký thành công
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.EnFileStateResBase">
+            <summary>
+            Đối tượng chứa thông tin trạng thái hồ sơ
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileStateResBase.Data">
+            <summary>
+            Dữ liệu trả về
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.DataFileStateRes">
+            <summary>
+            Đối tượng lưu thông tin data
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.DataFileStateRes.Name">
+            <summary>
+            Tên của hồ sơ
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.DataFileStateRes.States">
+            <summary>
+            Trạng thái của hồ sơ
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.StateFileStateRes">
+            <summary>
+            Đối tượng lưu thông tin chi tiết trạng thái của hồ sơ
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.StateFileStateRes.Id">
+            <summary>
+            state-id
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.StateFileStateRes.State">
+            <summary>
+            Trạng thái của hồ sơ
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.StateFileStateRes.Description">
+            <summary>
+            Mô tả cho trạng thái, nếu có
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.StateFileStateRes.CreatedAt">
+            <summary>
+            Thời gian tạo
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.EnFileStateReqBase">
+            <summary>
+            Đối tượng request để kiểm tra trạng thái hồ sơ
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EnFileStateReqBase.FileUploadId">
+            <summary>
+            Mã hồ sơ cần lây thông tin trạng thái
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.Internal.AMISAccLoginRes">
+            <summary>
+            Trả về kết quả login vào hệ thống AMIS
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomerIgnoreReq.Ignore">
+            <summary>
+            Trạng thái theo dõi
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersFromExcelReq.HasReject">
+            <summary>
+            Trạng thái từ chối (1,2,3,....)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersFromExcelReq.Reason">
+            <summary>
+            Lý do
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.Internal.CustomerStatusReqBase">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomerStatusReqBase.CustomerId">
+            <summary>
+            ID khách hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomerStatusReqBase.BankCodeId">
+            <summary>
+            Mã ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomerStatusReqBase.ClientId">
+            <summary>
+            Mã client
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomerStatusReqBase.TaxCode">
+            <summary>
+            Mã số thuế
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomerStatusReqBase.History">
+            <summary>
+            Lịch sử thay đối trạng thái
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomerStatusReqBase.ModifyDate">
+            <summary>
+            Thời gian chỉnh sửa
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.Internal.CustomersRegisterBankReqBase">
+            <summary>
+            Tham số đầu vào vào lấy thông số thống kê
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterBankReqBase.ClientID">
+            <summary>
+            Mã Client
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterBankReqBase.Organization">
+            <summary>
+            Văn phòng MISA
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterBankReqBase.FromDate">
+            <summary>
+            Từ ngày 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterBankReqBase.ToDate">
+            <summary>
+            Đến ngày
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.Internal.CustomersRegisterBankResBase">
+            <summary>
+            Đối tượng trả về số liệu thống kê số lượng khách hàng sử dụng dịch vụ MBH theo từng ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterBank.BankName">
+            <summary>
+            Tên ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterBank.TotalCustomer">
+            <summary>
+            Tổng số khách hàng sử dụng phần mềm (SME2017)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterBank.RegisterMBH">
+            <summary>
+            Số khách hàng sử dụng dịch vụ MBH (khi sử dụng phần mềm SME)
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.Internal.CustomersRegisterOrganizationReqBase">
+            <summary>
+            Tham số đầu vào vào lấy thông số thống kê
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterOrganizationReqBase.ClientID">
+            <summary>
+            Mã Client
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterOrganizationReqBase.Organization">
+            <summary>
+            Mã văn phòng MISA
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterOrganizationReqBase.FromDate">
+            <summary>
+            Từ ngày 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterOrganizationReqBase.ToDate">
+            <summary>
+            Đến ngày
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.Internal.CustomersRegisterOrganizationResBase">
+            <summary>
+            Đối tượng trả về số liệu thống kê số lượng khách hàng sử dụng dịch vụ MBH theo từng văn phòng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterOrganization.Organization">
+            <summary>
+            Tên văn phòng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterOrganization.TotalCustomer">
+            <summary>
+            Tổng số khách hàng sử dụng phần mềm (SME2017)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterOrganization.RegisterMBH">
+            <summary>
+            Số khách hàng sử dụng dịch vụ MBH (khi sử dụng phần mềm SME)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.CustomersRegisterOrganization.NotRegisterMBH">
+            <summary>
+            Số khách hàng chưa sử dụng dịch vụ MBH
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.Internal.MBHAuthAccount">
+            <summary>
+            Lưu thông tin tài khoản đăng nhập để lấy token
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.MBHAuthAccount.GrantType">
+            <summary>
+            Loại xác thực
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.MBHAuthAccount.Username">
+            <summary>
+            Tên đăng nhập
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.Internal.MBHAuthAccount.Password">
+            <summary>
+            Mật khẩu
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.ConnectorStatusResBase">
+            <summary>
+            Đối tượng trả về Tình hình kết nối với dịch vụ MBH của các ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ConnectorStatusResBase.NumberConnectedBank">
+            <summary>
+            Số lượng ngân hàng đã kết nối
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ConnectorStatusResBase.MostUsersBank">
+            <summary>
+            Tên NH có nhiều KH nhất
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ConnectorStatusResBase.UsersQuantity">
+            <summary>
+            Số lượng khách hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ConnectorStatusResBase.MostTransferredBank">
+            <summary>
+            Tên NH có phát sinh nhiều GD nhất
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ConnectorStatusResBase.TransferredQuantity">
+            <summary>
+            Số lượng giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ConnectorStatusResBase.MostAmountBank">
+            <summary>
+            Tên NH có tổng tiền giao dịch lớn nhất
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ConnectorStatusResBase.Amount">
+            <summary>
+            Tổng số tiền giao dịch
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.CustomersRegisterResBase">
+            <summary>
+            Đối tượng báo cáo tình hình gửi thông tin khách hàng sang ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomersRegister.BankCodeId">
+            <summary>
+            Mã ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomersRegister.BankName">
+            <summary>
+            Tên ngân hàng 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomersRegister.UserRegister">
+            <summary>
+            Tổng số khách hàng đã có TK
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomersRegister.CustomerRegister">
+            <summary>
+            Số lượng khách hàng chưa có TK 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomersRegister.ForwardBank">
+            <summary>
+            Số khách hàng đã chuyển sang ngân hàng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.ListCustomerRegisterReqBase">
+            <summary>
+            Request lấy danh sách thông tin chi tiết khách hàng đăng kí MBH
+            </summary>
+        </member>
+        <member name="M:MISA.BankHub.Base.Entities.ListCustomerRegisterReqBase.#ctor">
+            <summary>
+            Hàm khởi tạo
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ListCustomerRegisterReqBase.FlagISMAC">
+            <summary>
+            Tìm kiếm theo ISMAC
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ListCustomerRegisterReqBase.Client">
+            <summary>
+            Nguồn khách hàng đăng kí: SME, AMIS
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ListCustomerRegisterReqBase.Status">
+            <summary>
+            Trạng thái mở TK cho khách hàng:
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ListCustomerRegisterReqBase.Ignore">
+            <summary>
+            Quan tâm?
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ListCustomerRegisterReqBase.HasReject">
+            <summary>
+            Từ chối?
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ListCustomerRegisterReqBase.Province">
+            <summary>
+            Lịch sử thay đổi
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ListCustomerRegisterReqBase.UsageStatus">
+            <summary>
+            Trạng thái tình hình sử dụng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.ListCustomerRegisterResBase">
+            <summary>
+            Đối tượng trả về khi lấy danh sách thông tin khách hàng đăng kí dịch vụ MBH
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.CustomerRegisterInfo">
+            <summary>
+            Đối tượng thông tin chi tiết khách hàng đăng kí dịch vụ MBH
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.CustomerRegisterId">
+            <summary>
+            ID khách hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.Ignore">
+            <summary>
+            Trạng thái theo dõi khách hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.TaxCode">
+            <summary>
+            Mã số thuế
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.BankCodeList">
+            <summary>
+            Danh sách ngân hàng đăng kí
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.ClientId">
+            <summary>
+            Nguồn khách hàng đăng kí: SME, AMIS
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.CompanyName">
+            <summary>
+            Tên công ty
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.ProvinceName">
+            <summary>
+            Tỉnh/Thành phố
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.Address">
+            <summary>
+            Địa chỉ 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.Name">
+            <summary>
+            Tên người liên hệ
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.PhoneNumber">
+            <summary>
+            Số điện thoại người liên hệ
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.Email">
+            <summary>
+            Email người liên hệ
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.Status">
+            <summary>
+            Trạng thái của KH: 
+             1:  Đã có TK NH,
+            21:  Đã chuyển sang NH
+            22:  Chưa chuyển sang NH
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.HasReject">
+            <summary>
+            Trạng thái từ chối
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.Reason">
+            <summary>
+            Lý do từ chối
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.TransferTotal">
+            <summary>
+            Tổng số giao dịch chuyển tiền thành công
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.CustomerRegisterInfo.TransferIN">
+            <summary>
+            Số giao dịch chuyển tiền nội bộ thành công
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TransferScopeReqBase">
+            <summary>
+            Tham số lấy thông tin giao dịch theo khoảng giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferScopeReqBase.Money">
+            <summary>
+            Khoản tiền
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TransferScopeResBase">
+            <summary>
+            Đối tượng Thông tin giao dịch chuyển tiền theo khoảng giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferScopeResBase.TransferBelows">
+            <summary>
+            Thông tin giao dịch dưới 500 triệu
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferScopeResBase.TransferAboves">
+            <summary>
+            Thông tin giao dịch trên 500 triệu
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TransferInfo">
+            <summary>
+            Đối tượng thông tin giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferInfo.BankName">
+            <summary>
+            Tên ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferInfo.QuantityTotal">
+            <summary>
+            Tổng số lượng giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferInfo.AmountTotal">
+            <summary>
+            Tổng giá trị giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferInfo.AverageFee">
+            <summary>
+            Tổng phí trung bình
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferInfo.QuantityExternal">
+            <summary>
+            Số lượng giao dịch liên ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferInfo.AmountExternal">
+            <summary>
+            Tổng giá trị giao dịch liên ngân hàng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TransferStatisticResBase">
+            <summary>
+            Đối tượng báo cáo tình hình giao dịch chuyển tiền theo từng ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferStatistic.BankName">
+            <summary>
+            Tên ngân hàng 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferStatistic.TransfersSuccess">
+            <summary>
+            Số giao dịch chuyển tiền thành công
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferStatistic.TransfersFail">
+            <summary>
+            Số giao dịch chuyển tiền thất bại
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferStatistic.TotalMoneyTransfers">
+            <summary>
+            Tổng tiền giao dịch chuyển tiền thành công
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferStatistic.TotalMoneyInternal">
+            <summary>
+            Tổng tiền giao dịch chuyển tiền nội bộ ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferStatistic.TotalFee">
+            <summary>
+            Tổng phí giao dịch chuyển tiền
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferStatistic.TotalFeeInternal">
+            <summary>
+            Tổng phí chuyển tiền trong hệ thống
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TransferStatusResBase">
+            <summary>
+            Đối tượng trả về Tình hình giao dịch chuyển tiền
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferStatusResBase.TotalTransferAmount">
+            <summary>
+            Tổng tiền giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferStatusResBase.TotalTransferQuantity">
+            <summary>
+            Tổng số giao dịch chuyển tiền
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransferStatusResBase.TotalCost">
+            <summary>
+            Tổng tiền phí giao dịch chuyển tiền
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.UserStatisticsUseReqBase">
+            <summary>
+            Điều kiện gửi request lên để lấy dữ liệu thống kê tình hình sử dụng dịch vụ kết nối ngân hàng điên tử
+            </summary>
+            Created by: NTQuyen 09/11/2018
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserStatisticsUseReqBase.BankCode">
+            <summary>
+             Mã ngân hàng muốn xem báo cáo
+             </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserStatisticsUseReqBase.Organization">
+            <summary>
+            Văn phòng MISA
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.UserStatisticsUseResBase">
+            <summary>
+            Danh sách đối tượng tình hình sử dụng dịch vụ kết nối ngân hàng điên tử
+            </summary>
+            Created by: NTQuyen 09/11/2018
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.UsageStatistics">
+            <summary>
+            Đối tượng tình hình sử dụng dịch vụ kết nối ngân hàng điên tử
+            </summary>
+            Created by: NTQuyen 09/11/2018
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UsageStatistics.BankCodeId">
+            <summary>
+            Mã ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UsageStatistics.BankName">
+            <summary>
+            Tên ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UsageStatistics.TotalRegister">
+            <summary>
+            Tổng khách hàng đã đăng ký
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UsageStatistics.TotalConnected">
+            <summary>
+            Tổng khách hàng đã kết nối
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UsageStatistics.TotalCreatedTrans">
+            <summary>
+            Khách hàng đã phát sinh giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UsageStatistics.TotalTransaction">
+            <summary>
+            Khách hàng đã phát sinh giao dịch chuyển tiền
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UsageStatistics.TotalNotConnected">
+            <summary>
+            Khách hàng chưa sử dụng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UsageStatistics.TotalReject">
+            <summary>
+            Khách hàng không dùng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UsageStatistics.SortOrder">
+            <summary>
+            sắp xếp tên ngân hàng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.UserStatisticsConnectReqBase">
+            <summary>
+            Điều kiện gửi request lên để lấy dữ liệu tình hình kết nối theo từng ngân hàng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.UserStatisticsConnectResBase">
+            <summary>
+            Danh sách đối tượng tình hình kết nối theo từng ngân hàng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.UserStatisticsConnect">
+            <summary>
+            Tình hình kết nối theo từng ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserStatisticsConnect.BankCodeId">
+            <summary>
+            Mã ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserStatisticsConnect.BankName">
+            <summary>
+            Tên ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserStatisticsConnect.TotalRegister">
+            <summary>
+            Tống số khách hàng đăng ký
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserStatisticsConnect.TotalNotConnected">
+            <summary>
+            Tổng số khách hàng chưa kết nối
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserStatisticsConnect.NumberAvailableAccount">
+            <summary>
+            Số khách hàng đã có tài khoản tại ngân hàng có trạng thái connected
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserStatisticsConnect.NumberCreateNewAccount">
+            <summary>
+            Số khách hàng mở mới tài khoản có trạng thái connected
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserStatisticsConnect.SortOrder">
+            <summary>
+            Sắp xếp theo thứ tự
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.UserStatusResBase">
+            <summary>
+            Đối tượng trả về Tình hình khách hàng đăng kí dịch vụ MBH 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserStatusResBase.TotalUsersRegister">
+            <summary>
+            Tổng số khách hàng đăng kí dịch vụ MBH
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserStatusResBase.TotalUsersConnected">
+            <summary>
+            Tổng số KH kết nối thành công
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserStatusResBase.TotalUsersTransfer">
+            <summary>
+            Tổng số KH phát sinh giao dịch
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.SummaryReportReqBase">
+            <summary>
+            Request thông tin báo cáo chung
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.SummaryReportReqBase.BankCode">
+            <summary>
+            Mã ngân hàng muốn xem báo cáo
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.SummaryReportReqBase.FromDate">
+            <summary>
+            Thời gian bắt đầu
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.SummaryReportReqBase.ToDate">
+            <summary>
+            Thời gian kết thúc
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.SummaryReportReqBase.Organization">
+            <summary>
+            Văn phòng MISA
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.SummaryReportResBase">
+            <summary>
+            Đối tượng báo cáo tổng hợp
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.SummaryReport.ConditionName">
+            <summary>
+            Tên thông tin báo cáo.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.SummaryReport.ResultValue">
+            <summary>
+            Giá trị của thông tin trả về.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.SummaryReport.Sort">
+            <summary>
+            Thứ tự sắp xếp hiển thị thông tin.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.SignDataReq">
+            <summary>
+            Đối tượng request ký số SHA1
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.SignDataReq.DataInput">
+            <summary>
+            Chuỗi muốn ký.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.SignDataReq.Algorithm">
+            <summary>
+            Thuật toán mã hóa. Mặc định là SHA1
+            SHA1: SHA1WITHRSA
+            SHA256: SHA256WITHRSA
+            Tham khảo: https://github.com/neoeinstein/bouncycastle/blob/master/crypto/src/security/SignerUtilities.cs
+            </summary>
+        </member>
+        <member name="F:MISA.BankHub.Base.Entities.SignDataReq.BankCode">
+            <summary>
+            Mã ngân hàng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.SignDataRes">
+            <summary>
+            Đối tượng lưu thông tin kết quả ký.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.SignDataRes.SignData">
+            <summary>
+            Chuỗi sau khi ký số.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.VerifySignatureReq">
+            <summary>
+            Lưu thông tin kết quả verify cho chuỗi chữ ký.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.VerifySignatureReq.Input">
+            <summary>
+            Chuỗi để veryfy
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.VerifySignatureReq.SignMsg">
+            <summary>
+            Chuỗi ký số cần veryfy
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.VerifySignatureReq.PLKeyName">
+            <summary>
+            Tên file public key để very file
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.VerifySignatureReq.Algorithm">
+            <summary>
+            Thuật toán mã hóa. Mặc định là SHA1
+            SHA1: SHA1WITHRSA
+            SHA256: SHA256WITHRSA
+            Tham khảo: https://github.com/neoeinstein/bouncycastle/blob/master/crypto/src/security/SignerUtilities.cs
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.VerifySignatureReq.BankCode">
+            <summary>
+            Mã ngân hàng. Mặc định là NULL
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.VerifySignRes">
+            <summary>
+            Lưu thông tin kết quả verify cho chuỗi chữ ký.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.VerifySignRes.Verify">
+            <summary>
+            Verify thành công hay không.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.MBHExcDataInfo">
+            <summary>
+            Đối tượng lưu thông tin trong controller
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.MBHExcDataInfo.ErrEntity">
+            <summary>
+            Đối tượng lỗi bắn SMS và Mail
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.MBHDataInfoBase">
+            <summary>
+            Đối tượng lưu thông tin trong controller
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.MBHDataInfoBase.RequestParam">
+            <summary>
+            Giá trị request
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.MBHDataInfoBase.ResBase">
+            <summary>
+            Thông tin chi tiết khi gọi sang API của ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.MBHDataInfoBase.Exc">
+            <summary>
+            Giá trị exception
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.AccountStatusInfo">
+            <summary>
+            Thông tin trạng thái tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountStatusInfo.Account">
+            <summary>
+            Số tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountStatusInfo.BankCode">
+            <summary>
+            Mã ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountStatusInfo.Status">
+            <summary>
+            Trạng thái tài khoản
+            -True: Có tồn tại
+            -False: Không tồn tại
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BankCodeBase">
+            <summary>
+            Thông tin mã ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.BankCodeId">
+            <summary>
+            Mã ngân hàng: MSB, VTB,...
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.BankName">
+            <summary>
+            Tên ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.Status">
+            <summary>
+            Trạng thái: True: Activate; False: Deactivate
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.BankNo">
+            <summary>
+            Số ngân hàng - để phân biệt khi nào chuyển khoản nội bộ ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.ShortName">
+            <summary>
+            Tên viết tắt
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.Logo">
+            <summary>
+            Ảnh trên form Mời sử dụng (base64 image encoder)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.SmallLogo">
+            <summary>
+            Ảnh trên form đăng nhập (base64 image encoder)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.SortOrder">
+            <summary>
+            Thứ tự
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.BenefitNameMaxLength">
+            <summary>
+            Maxlength đối tượng thụ hưởng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.PurposeMaxLength">
+            <summary>
+            Maxlength nội dung chuyển tiền
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.AccountType">
+            <summary>
+            Mã tài khoản thanh toán với từng ngân hàng (Không sử dụng nữa, sẽ xóa khi phát hành chính thức cho khách hàng)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.Timeout">
+            <summary>
+            Thời gian timeout theo từng ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.Hotline">
+            <summary>
+            Số hot line của Ngân Hàng.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.LinkPromotion">
+            <summary>
+            Link của chính sách ưu đãi mới nhất của từng Ngân Hàng.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.LinkPageListBranch">
+            <summary>
+            Danh sách phòng giao dịch của ngân hàng (trả về link trang liệt kê danh sách phòng giao dịch của ngân hàng).
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.PhoneNumbers">
+            <summary>
+            Số điện thoại liên hệ với Ngân Hàng.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.HasMarketing">
+            <summary>
+            Ngân hàng đã hỗ trợ marketing chưa.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.AccountTypes">
+            <summary>
+            Dánh sách tài khoản thanh toán của ngân hàng.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.LogoURL">
+            <summary>
+            Đường dẫn URL cho ảnh logo của ngân hàng. Nếu rỗng thì sử dụng giá trị Logo.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.SmallLogoURL">
+            <summary>
+            Đường dẫn URL cho ảnh logo nhỏ của ngân hàng. Nếu rỗng thì sử dụng giá trị của SmallLogo.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BankCodeBase.VersionSupports">
+            <summary>
+            Danh sách client hỗ trợ và version tương ứng.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.VersionSupport">
+            <summary>
+            Thông tin phiên bản hỗ trợ.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.VersionSupport.ClientCode">
+            <summary>
+            Mã code phần mềm.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.VersionSupport.MajorVersion">
+            <summary>
+            Phiên bản chính.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.VersionSupport.MinorVersion">
+            <summary>
+            Phiên bản phụ.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.VersionSupport.PathVersion">
+            <summary>
+            Phiên bản vá.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BenefitBankBase">
+            <summary>
+            Ngân hàng thụ hưởng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BenefitBankBase.BankNo">
+            <summary>
+            Mã ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BenefitBankBase.ShortName">
+            <summary>
+            Tên viết tắt
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BenefitBankBase.FullName">
+            <summary>
+            Tên đầy đủ
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BenefitBranchBase">
+            <summary>
+            Chi nhánh ngân hàng.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BenefitBranchBase.BranchNo">
+            <summary>
+            Mã chi nhánh
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BenefitBranchBase.ShortName">
+            <summary>
+            Tên viết tắt
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BenefitBranchBase.FullName">
+            <summary>
+            Tên đầy đủ
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.EmailInfo">
+            <summary>
+            Đối tượng lưu thông tin Email của ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.EmailInfo.EmailTo">
+            <summary>
+            Chuỗi lưu thông tin email gửi đến (email1;email2)
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TaxInfo">
+            <summary>
+            Thông tin mã số thuế
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxInfo.BankCode">
+            <summary>
+            Mã ngân hàng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxInfo.TaxCode">
+            <summary>
+            Mã số thuế
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TranDetail">
+            <summary>
+            Thông tin chi tiết giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranDetail.TranSerial">
+            <summary>
+            Số serial giao dịch, dùng để tra cứu lại trạng thái của giao dịch.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranDetail.RolloutAcctNo">
+            <summary>
+            Tài khoản nguồn
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranDetail.BenefitAcctNo">
+            <summary>
+            Số tài khoản thụ hưởng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranDetail.BenefitName">
+            <summary>
+            Tên người thụ hưởng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranDetail.BenefitBankName">
+            <summary>
+            Tên chi nhánh thụ hưởng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranDetail.BenefitBranchName">
+            <summary>
+            Tên chi nhánh thụ hưởng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranDetail.Amount">
+            <summary>
+            Số tiền
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranDetail.Fee">
+            <summary>
+            Số tiền phí
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranDetail.Status">
+            <summary>
+            Trạng thái giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranDetail.Reason">
+            <summary>
+            Lý do từ chối giao dịch
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.PriceInfoResBase">
+            <summary>
+            Đối tượng trả về của chín sách giá
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.PriceInfoResBase.Price">
+            <summary>
+            Chính sách giá của 1 năm sử dụng MISA BankHub
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.PriceInfoResBase.Deadline">
+            <summary>
+            Ngày hiển thị thông điệp miễn phí.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.PriceInfoResBase.Message">
+            <summary>
+            Thông tin nội dung thông báo.(Khi IsDeadline trả về True)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.PriceInfoResBase.IsDeadline">
+            <summary>
+            Tới Deadline chưa.
+            True: Nếu đã qua deadline(Nếu ngày trên server > Deadline).
+            False: Nếu chưa qua deadline.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TaxCodeConnectReqBase">
+            <summary>
+            Đối tượng lưu mã số thuế khi request kiểm tra trạng thái kết nối.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeConnectReqBase.TaxCode">
+            <summary>
+            Mã số thuế.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeConnectReqBase.BanksCode">
+            <summary>
+            Danh sách mã ngân hàng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TaxCodeDetailReqBase">
+            <summary>
+            Đối tượng lưu mã số thuế khi request.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeDetailReqBase.TaxCode">
+            <summary>
+            Mã số thuế.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TaxCodeConnectResBase">
+            <summary>
+            Đối tượng trả về thông tin kết nối theo mã ngân hàng.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeConnectResBase.TaxCode">
+            <summary>
+            Mã số thuế.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeConnectResBase.ConnectDetails">
+            <summary>
+            Danh sách đối tượng thông tin chi tiết trạng thái kết nối.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.ConnectDetail">
+            <summary>
+            Thông tin User xác nhận đăng ký.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ConnectDetail.BankCode">
+            <summary>
+            Mã ngân hàng.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ConnectDetail.HasConnected">
+            <summary>
+            Đã kết nối
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ConnectDetail.HasTransaction">
+            <summary>
+            Đã có giao dịch thành công
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TaxCodeDetailResBase">
+            <summary>
+            Đối tượng trả về thông tin ngân hàng mà mã số thuế đã đăng ký.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeDetailResBase.TaxCode">
+            <summary>
+            Mã số thuế.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeDetailResBase.BanksCode">
+            <summary>
+            Danh sách ngân hàng mã số thuế đã đăng ký. (Sử dụng cho bản SME R42 trở về trước)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeDetailResBase.UserDetails">
+            <summary>
+            Danh sách thông tin user xác nhận đăng ký theo ngân hàng. (Sử dụng cho bản SME R42 trở về trước)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeDetailResBase.ConfirmAgreement">
+            <summary>
+            Đã xác nhận thỏa thuận.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeDetailResBase.DateOfAgreement">
+            <summary>
+            Phiên bản ngày (Ngày của phiên bản thỏa thuận) (Format ISO 8601).
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeDetailResBase.NameOfConfirm">
+            <summary>
+            Người xác nhận thỏa thuận.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeDetailResBase.DateConfirm">
+            <summary>
+            Ngày, giờ xác nhận thỏa thuận (Format ISO 8601).
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeDetailResBase.CreatedDate">
+            <summary>
+            Ngày đăng ký (Ngày của phiên bản thỏa thuận) (Format ISO 8601).
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeDetailResBase.Message">
+            <summary>
+            Thông tin nội dung thông báo. (Khi  OverExpired trả về False)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TaxCodeDetailResBase.OverExpired">
+            <summary>
+            Còn tài nguyên hay không:
+            True: Nếu còn tài nguyên.
+            False: Hết tài nguyên.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.UserDetail">
+            <summary>
+            Thông tin User xác nhận đăng ký.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserDetail.BankCode">
+            <summary>
+            Mã ngân hàng.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserDetail.ConfirmAgreement">
+            <summary>
+            Đã xác nhận thỏa thuận.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserDetail.DateOfAgreement">
+            <summary>
+            Phiên bản ngày (Ngày của phiên bản thỏa thuận) (Format ISO 8601).
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserDetail.NameOfConfirm">
+            <summary>
+            Người xác nhận thỏa thuận.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserDetail.DateConfirm">
+            <summary>
+            Ngày, giờ xác nhận thỏa thuận (Format ISO 8601).
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.UserRegisterReqBase">
+            <summary>
+            Đối tượng đăng ký hệ thống MISA BankHub
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserRegisterReqBase.TaxCode">
+            <summary>
+            Mã số thuế.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserRegisterReqBase.CompanyName">
+            <summary>
+            Tên công ty.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserRegisterReqBase.ProvinceName">
+            <summary>
+            Tỉnh, thành phố.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserRegisterReqBase.Address">
+            <summary>
+            Địa chỉ.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserRegisterReqBase.Name">
+            <summary>
+            Họ tên người liên hệ.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserRegisterReqBase.Position">
+            <summary>
+            Chức vụ người liên hệ.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserRegisterReqBase.PhoneNumber">
+            <summary>
+            Số điện thoại người liên hệ.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserRegisterReqBase.Email">
+            <summary>
+            Email người liên hệ.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserRegisterReqBase.ConfirmAgreement">
+             <summary>
+             Đã xác nhận thỏa thuận:
+            -	True: Đã xác nhận
+            -	False: Chưa xác nhận
+             </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserRegisterReqBase.DateOfAgreement">
+            <summary>
+            Phiên bản ngày (Ngày của phiên bản thỏa thuận) (Format ISO 8601)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserRegisterReqBase.NameOfConfirm">
+            <summary>
+            Người xác nhận thỏa thuận
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserRegisterReqBase.DateConfirm">
+            <summary>
+            Ngày, giờ xác nhận thỏa thuận (Ngày, giờ) (Format ISO 8601)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.UserRegisterReqBase.CreateLicenseTrialOnly">
+            <summary>
+            Cho phep dang ky license thong tin kh bang tay
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BenefitBankReqBase">
+            <summary>
+            Request lấy danh sách ngân hàng thụ hưởng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BenefitBankResBase">
+            <summary>
+            Ngân hàng thụ hưởng (Chuyển khoản liên ngân hàng)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BenefitBankResBase.BenefiBanks">
+            <summary>
+            Danh sách ngân hàng thụ hưởng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BenefitBranchReqBase">
+            <summary>
+            Request lấy danh sách chi nhánh ngân hàng.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BenefitBranchReqBase.BankNo">
+            <summary>
+            Mã ngân hàng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.BenefitBranchResBase">
+            <summary>
+            Chi nhánh ngân hàng.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.BenefitBranchResBase.BenefitBranchs">
+            <summary>
+            Danh sách chi nhánh ngân hàng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.AccHistoryReqBase">
+            <summary>
+            Request lấy lịch sử giao dịch của tài khoản.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHistoryReqBase.AccountNo">
+            <summary>
+            Số tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHistoryReqBase.AccountType">
+            <summary>
+            Loại tài khoản. Sử dụng riêng cho VTB. Mặc định không chuyền lên sẽ là tài khoản thanh toán.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHistoryReqBase.FromDate">
+            <summary>
+            Từ ngày (Định dạng yyyy-mm-dd)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHistoryReqBase.ToDate">
+            <summary>
+            Dến ngày (Định dạng yyyy-mm-dd)
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.AccHistoryResBase">
+            <summary>
+            Thông tin lịch sử giao dịch tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHistoryResBase.OpeningBalance">
+            <summary>
+            Số dư đầu kỳ
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHistoryResBase.EndingBalance">
+            <summary>
+            Số dư cuối kỳ 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccHistoryResBase.AccountsHistory">
+            <summary>
+            Danh sách thông tin lịch sử của tài khoản
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.LoginReqBase">
+            <summary>
+            Đối tượng đăng nhập.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.LoginReqBase.BankCode">
+            <summary>
+            Mã ngân hàng.
+            Ví dụ: Vietinbank: VTB, PVBank: PVB,...
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.LoginReqBase.Username">
+            <summary>
+            Tên đăng nhập.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.LoginReqBase.Password">
+            <summary>
+            Mật khẩu.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.LoginReqBase.Method">
+            <summary>
+            0 : Get link login
+            1: Get Token
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.LoginReqBase.RequestID">
+            <summary>
+            RequestID của lần reuqest trước
+            Đối với NamABank thì RequestID là Auth_Code
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.LoginResBase">
+            <summary>
+            Kết quả trả về cho Client
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.LoginResBase.Token">
+            <summary>
+            Chuỗi xác thực từ API của ngân hang (Client chỉ giữ chuỗi này cho những lần gọi tiếp theo)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.LoginResBase.CustomerName">
+            <summary>
+            Tên người dùng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.LoginResBase.RequestID">
+            <summary>
+            RequestID phải khác nhau sau mỗi lần request
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.LoginResBase.LinkToLogin">
+            <summary>
+            Link để login tới VPBank
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.AccountBase">
+            <summary>
+            Thông tin tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountBase.AccountNo">
+            <summary>   
+            Số tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountBase.AccountStatus">
+            <summary>
+            Trạng thái 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountBase.StatusName">
+            <summary>
+            Tên trạng thái
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountBase.AccountType">
+            <summary>
+            Loại tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountBase.TypeName">
+            <summary>
+            Tên loại tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountBase.CurrencyCode">
+            <summary>
+            Mã currency code
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountBase.AvailableBalance">
+            <summary>
+            Số dư khả dụng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountBase.InterestRate">
+            <summary>
+            Lãi suất / năm
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountBase.AccruedInterest">
+            <summary>
+            Lãi cộng dồn
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountBase.IssuedDate">
+            <summary>
+            Ngày mở tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountBase.CurrentBalance">
+            <summary>
+            Số dư hiện tại
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.AccountDetailBase">
+            <summary>
+            Thông tin chi tiết tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountDetailBase.OverDrawnLimit">
+            <summary>
+            Hạn mức thấu chi
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountDetailBase.MaturityDate">
+            <summary>
+            Ngày đáo hạn 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountDetailBase.OriginalBalance">
+            <summary>
+            Số dư gốc FD
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountDetailBase.LoanTermInString">
+            <summary>
+            Kỳ hạn vay (LN)
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.AccountHistoryBase">
+            <summary>
+            Thông tin lịch sử giao dịch tài khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountHistoryBase.DCSign">
+            <summary>
+            Công hay trừ tiền (D or C)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountHistoryBase.BeneficiaryAcctNo">
+            <summary>
+            Số tài khoản thụ hưởng (Hiện tại chỉ có trên MSB)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountHistoryBase.BeneficiaryAcctName">
+            <summary>
+            Tên người thụ hưởng (Hiện tại chỉ có trên MSB)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountHistoryBase.BeneficiaryAcctBank">
+            <summary>
+            Ngân hàng thụ hưởng/Ngân hàng chuyển (Hiện tại chỉ có trên MSB)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountHistoryBase.Amount">
+            <summary>
+            Số tiền giao dịch	
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountHistoryBase.Remark">
+            <summary>
+            Chú thích
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountHistoryBase.TranTime">
+            <summary>
+            Thời gian giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountHistoryBase.TransferType">
+            <summary>
+            Mã loại giao dịch
+            IN: Nội bộ
+            OUT: Liên ngân hàng
+            OTHER: Loại giao dịch khác
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountHistoryBase.PreBalance">
+            <summary>
+            Số tiền còn lại 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountHistoryBase.TranSerial">
+            <summary>
+            Số serial của lịch sử giao dịch. Không dùng để tra cứu thông tin giao dịch.
+            Đối với VTB: Là dữ liệu đầu vào của request chi tiết lịch sử giao dịch: TranSerial
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountHistoryBase.CurrencyCode">
+            <summary>
+            Mã loại tiền
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountHistoryBase.Dorc">
+            <summary>
+            Loại ghi có hay ghi nợ (D/C Debit/Credit)
+            Sử dụng cho VTB: Là dữ liệu đầu vào của request chi tiết lịch sử giao dịch: Dorc
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountHistoryBase.ChannelId">
+            <summary>
+            Kênh giao dịch
+            Chỉ sử dụng cho VTB: Là dữ liệu đầu vào của request chi tiết lịch sử giao dịch: ChannelId
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.AccountHistoryBase.TransRefNo">
+            <summary>
+            Số ref trên host (Mã tham chiếu)
+            Chỉ dùng cho VTB: Là dữ liệu đầu vào của request chi tiết lịch sử giao dịch: TransRefNo
+            Dùng cho cả VPB : Mã bút toán trên T24
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.OTPReqBase">
+            <summary>
+            Xác nhận mã OTP
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.OTPReqBase.TokenTransaction">
+            <summary>
+            Mã phiên giao dịch nhận được
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.OTPReqBase.OtpId">
+            <summary>
+            Tham số phiên xác thực nhận được
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.OTPReqBase.OtpInput">
+            <summary>
+            Mã OTP mà khách hàng nhập vào
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.OTPReqBase.TransferType">
+             <summary>
+             Loại chuyển khoản.
+            Chuyển khoản liên ngân =  “OUT”
+            Chuyển nội bội = “IN”
+             </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.OTPResBase">
+            <summary>
+            Kết quả trả về khi xác nhận mã giao dịch.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.OTPResBase.TranSerial">
+            <summary>
+            Số serial giao dịch, dùng để tra cứu lại trạng thái của giao dịch.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.OTPResBase.Token">
+            <summary>
+            Token mới được trả về. Hiện tại chỉ có MSB sử dụng cách này.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.RequestBase">
+            <summary>
+            Request chung cho tất cả
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.RequestBase.BankCode">
+            <summary>
+            Mã ngân hàng.
+            Ví dụ: Vietinbank: VTB, PVBank: PVB,...
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.RequestBase.Token">
+            <summary>
+            Mã tokent được trả về từ API của ngân hàng
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.ResponseBase">
+            <summary>
+            Kết quả trả về cho service.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ResponseBase.Result">
+            <summary>
+            Kết quả truy vấn
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ResponseBase.RequestDetail">
+            <summary>
+            Thông tin request chi tiết khi gọi sang ngân hàng (Request và Response)
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.ResultBase">
+            <summary>
+            Thông tin kết quả trả về của service.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ResultBase.Success">
+            <summary>
+            Thành công hay không
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ResultBase.ErrorType">
+            <summary>
+            Mã code lỗi
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.ResultBase.ErrorMessage">
+            <summary>
+            Thông báo nếu thất bại
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TranDetailReqBase">
+            <summary>
+            Tra cứu thông tin giao dịch.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranDetailReqBase.TranSerial">
+            <summary>
+            Số serial giao dịch, dùng để tra cứu lại trạng thái của giao dịch.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TranDetailResBase">
+            <summary>
+            Thông tin 1 giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranDetailResBase.TranDetail">
+            <summary>
+            Thông tin chi tiết giao dịch.
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TranReqBase">
+            <summary>
+            Giao dịch chuyển khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.FromAccountNo">
+            <summary>
+            Số tài khoản nguồn
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.TransferType">
+             <summary>
+            Loại chuyển khoản: IN: Nội bộ; OUT: Liên ngân hàng
+             </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.Amount">
+            <summary>
+             Số tiền chuyển
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.Purpose">
+            <summary>
+            Mục đích, nội dung chuyển khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.ToBenefitAcc">
+            <summary>
+            Tài khoản thụ hưởng 
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.ToBenefitName">
+            <summary>
+            Tên tài khoản thụ hưởng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.FeeType">
+             <summary>
+             Phí giao dịch
+            Do người chuyển trả : 0
+            Do người nhận trả : 1
+            Mặc định nếu không truyền thì là 0
+             </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.BankNo">
+            <summary>
+            Mã ngân hàng (Yêu cầu trong trường hợp liên ngân hàng)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.BranchNo">
+            <summary>
+            Mã ngân hàng (Yêu cầu trong trường hợp liên ngân hàng)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.Priority">
+            <summary>
+            Mã ngân hàng (Yêu cầu trong trường hợp liên ngân hàng)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.WaitingApprove">
+            <summary>
+            Số ngày chờ duyệt (1-> 7)
+            Mặc định nếu không truyền thì là 7
+            Khi maker tạo lệnh trên Misa thì sẽ có một khoảng thời gian lệnh này được phép chờ duyệt, sau khoảng thời gian này lệnh này sẽ không còn có hiệu lực nữa.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.NotificationTo">
+             <summary>
+             Gửi mail thông báo đến ai?
+            Maker: maker
+            Checker:checker
+            Đối tác: truyền email đối tác
+            Truyển một mảng có những phần từ dưới dây(Có thể truyền ít hơn)
+            [“maker”,”checker”,”email đối tác”]
+             </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.NotificationType">
+             <summary>
+             Gửi khi nào?
+            Giao dịch thành công:SUCC
+            Giao dịch thất bại:FAIL
+            Gửi đến các cấp cần phê duyệt: WAIT_APPROVE
+            Truyền một mảng có những phần tử dưới đây. (Có thể truyền ít hơn)
+            [“FAIL”,”SUCC”,”WAIT_APPROVE”]
+             </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.Confirm">
+            <summary>
+            Yêu cầu người dùng xác nhận hay không.
+            Y: Yêu cầu xác nhận (Bước 1)
+            N: Không cần xác nhận (Bước 2)
+            Chỉ sử dụng cho ngân hàng VTB.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.SeqNo">
+            <summary>
+            Số ủy nhiệm chi.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranReqBase.TransactionName">
+            <summary>
+            Tên lệnh chuyển tiền (Viết không dấu).
+            Áp dụng cho ngân hàng Nam Á
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TranResBase">
+            <summary>
+            Request tạo 1 giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TranResBase.Transaction">
+            <summary>
+            Thông tin giao dịch
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Entities.TransactionBase">
+            <summary>
+            Thông tin giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.SecurityType">
+            <summary>
+            Hình thức bảo mật: -	SMS: Mã OTP sẽ gửi cho khách hàng qua điện thoại; -	SMS, TK: Sử dụng TOKEN RSA để nhập
+            VTB không có thông tin này
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.OtpId">
+            <summary>
+            Sử dụng để hiện thị cho hình thức bảo mật là SMS.
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.Fee">
+            <summary>
+            Số tiền phí
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.FeeType">
+            <summary>
+            Loại hình phí
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.FromAcc">
+            <summary>
+            Tài khoản nguồn
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.BenefitAcc">
+            <summary>
+            Số tài khoản thụ hưởng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.BenefitName">
+            <summary>
+            Tên tài khoản thụ hưởng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.BenefitBranchName">
+            <summary>
+            Tên chi nhánh thụ hưởng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.BenefitBankName">
+            <summary>
+            Tên ngân hàng thụ hưởng
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.Amount">
+            <summary>
+            Số tiền chuyển khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.Purpose">
+            <summary>
+            Mục đích, nội dung chuyển khoản
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.TransDate">
+            <summary>
+            Ngày giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.TokenTransaction">
+            <summary>
+            Mã xác thực phiên giao dịch
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.DayExp">
+            <summary>
+            Thời gian hết hạn duyệt (Format ISO 8601)
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.TransactionId">
+            <summary>
+            Mã giao dịch. Tùy ngân hàng thì mã này được trả về.
+            Dùng cho ngân hàng VTB
+            Dùng cho ngân hàng Nam Á Bank tương ứng với trường Transerial
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.Entities.TransactionBase.LinkVerifyOtp">
+            <summary>
+            Link để client confirm OTP
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.IBankHub">
+            <summary>
+            Interface của IBankHub
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.IBankHub.ClientId">
+            <summary>
+            Mã client
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.IBankHub.TaxCode">
+            <summary>
+            Mã số thuế
+            </summary>
+        </member>
+        <member name="P:MISA.BankHub.Base.IBankHub.BaseAddress">
+            <summary>
+            Đường dẫn tới API service của ngân hàng
+            </summary>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.Login(MISA.BankHub.Base.Entities.LoginReqBase)">
+            <summary>
+            Thực hiện login lên hệ thống của ngân hàng
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.GetListAccounts(MISA.BankHub.Base.Entities.AccInfoReqBase)">
+            <summary>
+            Truy vấn danh sách tài khoản
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.GetAccountDetail(MISA.BankHub.Base.Entities.AccDetailReqBase)">
+            <summary>
+            Truy vấn chi tiết tài khoản
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.GetAccountsHistory(MISA.BankHub.Base.Entities.AccHistoryReqBase)">
+            <summary>
+            Lấy lịch sử giao dịch
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.GetAccountsHistoryDetail(MISA.BankHub.Base.Entities.AccHisDetailReqBase)">
+            <summary>
+            Lấy chi tiết lịch sử giao dịch
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.GetListBenefitBanks(MISA.BankHub.Base.Entities.BenefitBankReqBase)">
+            <summary>
+            Lấy danh sách ngân hàng thụ hưởng
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.GetListBenefitBranchs(MISA.BankHub.Base.Entities.BenefitBranchReqBase)">
+            <summary>
+            Lấy danh sách chi nhánh ngân hàng thụ hưởng
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.LocalGetListBenefitBanks(MISA.BankHub.Base.Entities.BenefitBankReqBase)">
+            <summary>
+            Lấy danh sách ngân hàng thụ hưởng (internal)
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.LocalGetListBenefitBranchs(MISA.BankHub.Base.Entities.BenefitBranchReqBase)">
+            <summary>
+            Lấy danh sách chi nhánh ngân hàng thụ hưởng  (internal)
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.GetBenefitName(MISA.BankHub.Base.Entities.BenefitInfoReqBase)">
+            <summary>
+            Lấy tên người thụ hưởng
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.CreateTransaction(MISA.BankHub.Base.Entities.TranReqBase)">
+            <summary>
+            Tạo giao dịch chuyển khoản
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.GetTransactionDetail(MISA.BankHub.Base.Entities.TranDetailReqBase)">
+            <summary>
+            Lấy/Tra cứu thông tin giao dịch
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.ConfirmOTPCode(MISA.BankHub.Base.Entities.OTPReqBase)">
+            <summary>
+            Xác nhận mã giao dịch OTP
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.HandleResult(System.Object)">
+            <summary>
+            Xử lý kết quả trả về từ service
+            </summary>
+            <param name="result"></param>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.SendCustomerRegisterToBank(MISA.BankHub.Base.Entities.CustomerRegisterReqBase)">
+            <summary>
+            Gửi thông tin người đăng ký sang ngân hàng
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankHub.GetAccountDetailStatus(MISA.BankHub.Base.Entities.AccDetailStatusReqBase)">
+            <summary>
+            Kiểm tra thông tin tài khoản
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.IBankRequest.HandleHttpClientResLocal(MISA.BankHub.Base.Entities.ResponseBase,System.Net.Http.HttpResponseMessage)">
+            <summary>
+            Xử lý kết quả trả về sau khi gọi API của MBH.
+            </summary>
+            <param name="resultBase"></param>
+            <param name="responseMsg"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MISA.BankHub.Base.IFactoryRequest`13">
+            <summary>
+            
+            </summary>
+            <typeparam name="LoginReqType"></typeparam>
+            <typeparam name="AccInfoReqType"></typeparam>
+            <typeparam name="AccDetailReqType"></typeparam>
+            <typeparam name="HistoryReqType"></typeparam>
+            <typeparam name="HistoryDetailReqType"></typeparam>
+            <typeparam name="TranReqType"></typeparam>
+            <typeparam name="TranDetailReqType"></typeparam>
+            <typeparam name="BenefitBankType"></typeparam>
+            <typeparam name="BenefitBranchType"></typeparam>
+            <typeparam name="OTPConfirmReqType"></typeparam>
+            <typeparam name="BenefitType"></typeparam>
+            <typeparam name="CustomerRegisterType"></typeparam>
+            <typeparam name="AccStatusReqType"></typeparam>
+        </member>
+        <member name="T:MISA.BankHub.Base.FactoryRequestDecorator`13">
+            <summary>
+            
+            </summary>
+            <typeparam name="LoginReqType"></typeparam>
+            <typeparam name="AccInfoReqType"></typeparam>
+            <typeparam name="AccDetailReqType"></typeparam>
+            <typeparam name="HistoryReqType"></typeparam>
+            <typeparam name="HistoryDetailReqType"></typeparam>
+            <typeparam name="TranReqType"></typeparam>
+            <typeparam name="TranDetailReqType"></typeparam>
+            <typeparam name="BenefitBankType"></typeparam>
+            <typeparam name="BenefitBranchType"></typeparam>
+            <typeparam name="OTPConfirmReqType"></typeparam>
+            <typeparam name="BenefitInfoType"></typeparam>
+            <typeparam name="CustomerRegisterType"></typeparam>
+            <typeparam name="AccStatusReqType"></typeparam>
+        </member>
+        <member name="T:MISA.BankHub.Base.RequestHeaderAttribute">
+            <summary>
+            Thuộc tính request header cho đối tượng request lên API của ngân hàng.
+            </summary>
+        </member>
+        <member name="M:MISA.BankHub.Base.RequestHeaderAttribute.#ctor(System.String)">
+            <summary>
+            Hàm khởi tạo.
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="P:MISA.BankHub.Base.RequestHeaderAttribute.Name">
+            <summary>
+            Tệ của thuộc tính khi tạo header
+            </summary>
+        </member>
+        <member name="T:MISA.BankHub.Base.Validator.ValidateBase">
+            <summary>
+            Kiểm tra giá trị
+            </summary>
+        </member>
+        <member name="M:MISA.BankHub.Base.Validator.ValidateBase.Validate(System.String,System.Object)">
+            <summary>
+            Kiểm tra giá trị
+            </summary>
+            <param name="propertyName"></param>
+            <param name="propertyValue"></param>
+        </member>
+        <member name="M:MISA.BankHub.Base.Validator.ValidateParam`13.CreateHistoryRequest(MISA.BankHub.Base.Entities.AccHistoryReqBase)">
+            <summary>
+            Sửa lại lỗi tính thời gian đầu ngày fromDate đến cuối ngày toDate
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MISA.BankHub.Base.Validator.ValidateAttr.ValidateObject(System.Object)">
+            <summary>
+            Validate theo attribute
+            </summary>
+            <param name="param"></param>
+            Modify by NDViet 13.03.2019: Sửa lỗi Client gửi parameter lên null
+        </member>
+        <member name="T:MISA.BankHub.Base.Validator.NotNullAttribute">
+            <summary>
+            Kiểm tra notnull
+            </summary>
+        </member>
+        <member name="M:MISA.BankHub.Base.Validator.NotNullAttribute.Validate(System.String,System.Object)">
+            <summary>
+            Giá trị không được null
+            </summary>
+            <param name="propertyName"></param>
+            <param name="propertyValue"></param>
+        </member>
+        <member name="T:MISA.BankHub.Base.Validator.PositiveAttribute">
+            <summary>
+            Là số dương
+            </summary>
+        </member>
+        <member name="M:MISA.BankHub.Base.Validator.PositiveAttribute.Validate(System.String,System.Object)">
+            <summary>
+            Giá trị là number và > 0
+            </summary>
+            <param name="propertyName"></param>
+            <param name="propertyValue"></param>
+        </member>
+        <member name="T:MISA.BankHub.Base.Validator.IsDateTimeAttribute">
+            <summary>
+            Kiểm tra thời gian
+            </summary>
+        </member>
+        <member name="M:MISA.BankHub.Base.Validator.IsDateTimeAttribute.Validate(System.String,System.Object)">
+            <summary>
+            Phải là kiểu Datetime
+            </summary>
+            <param name="propertyName"></param>
+            <param name="propertyValue"></param>
+        </member>
+    </members>
+</doc>
